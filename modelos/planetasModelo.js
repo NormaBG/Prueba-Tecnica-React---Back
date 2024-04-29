@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const planetasSchema = new mongoose.planetasSchema({
+const planetasSchema = mongoose.Schema({
 
     nombrePlaneta: String, //obligatorio
     diametro: String,
@@ -16,3 +16,5 @@ const planetasSchema = new mongoose.planetasSchema({
 })
 
 const planetas = mongoose.model('planetas', planetasSchema)
+
+module.exports = planetas

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const navesSchema = new mongoose.navesSchema({
+const navesSchema = mongoose.Schema({
     nombre:String, //obligatorio
     modelo: String, //obligatorio
     clase: String,
@@ -15,4 +15,6 @@ const navesSchema = new mongoose.navesSchema({
     fec_modificacion: Date
 })
 
-const Naves = moongose.model('Naves',navesSchema)
+const Naves = mongoose.model('Naves',navesSchema)
+
+module.exports = Naves

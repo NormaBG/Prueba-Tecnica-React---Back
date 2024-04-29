@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const peliculasSchema = new mongoose.peliculasSchema({
+const peliculasSchema = mongoose.Schema({
 
     //todo es obligatorio
     tituloPelicula: String,
@@ -12,4 +12,4 @@ const peliculasSchema = new mongoose.peliculasSchema({
 })
 
 const Peliculas = mongoose.model('Peliculas', peliculasSchema)
-Peliculas.exports = Peliculas   
+module.exports = Peliculas   

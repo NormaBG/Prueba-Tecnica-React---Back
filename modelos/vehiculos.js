@@ -1,6 +1,6 @@
 const moongose = require('mongoose')
 
-const vehiculosSchema = new mongoose.vehiculosSchema({
+const vehiculosSchema = moongose.Schema({
     nombre:String, //obligatorio
     modelo: String, // obligatorio
     clase: String,
@@ -14,3 +14,4 @@ const vehiculosSchema = new mongoose.vehiculosSchema({
 })
 
 const Vehiculos = moongose.model('Vehiculos', vehiculosSchema)
+module.exports = Vehiculos

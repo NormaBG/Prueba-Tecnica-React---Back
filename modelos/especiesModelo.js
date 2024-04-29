@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const especiesSchema = new mongoose.especiesSchema({
+const especiesSchema = new mongoose.Schema({
 
     nombre:String, //obligatorio
     clasificacion: String,
@@ -20,3 +20,4 @@ const especiesSchema = new mongoose.especiesSchema({
 })
 
 const Especies = mongoose.model('Especies', especiesSchema)
+module.exports = Especies

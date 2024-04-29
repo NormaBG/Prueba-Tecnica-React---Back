@@ -1,6 +1,6 @@
-const moongose = require('mongoose')
+const mongoose = require('mongoose');
 
-const personajesSchema = new mongoose.personajesSchema({
+const personajesSchema = mongoose.Schema({ // Usar mongoose en lugar de moongoose
 
     nombre:String, //obligatorio
     fechaDeNacimiento:String,
@@ -11,23 +11,23 @@ const personajesSchema = new mongoose.personajesSchema({
     masa: String,
     colorDePiel: String,
     peliculas: {
-        type: mongose.peliculasSchema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Peliculas'
     },
     planetaNatal: {
-        type: mongose.planetasSchema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Planetas'
     },
     especies:{
-        type: mongose.especiesSchema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Especies'
     },
     naves:{
-        type: mongose.navesSchema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Naves'
     },
     vehiculos:{
-        type: mongose.vehiculosSchema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Vehiculos'
     },
     fec_creacion: Date,
@@ -35,4 +35,6 @@ const personajesSchema = new mongoose.personajesSchema({
 
 })
 
-const Personajes = moongose.model('Personajes', personajesSchema)
+const Personajes = mongoose.model('Personajes', personajesSchema)
+
+module.exports = Personajes
