@@ -35,6 +35,21 @@ app.get('/peliculas', (req, res) => {
     .then(peliculas => res.send(peliculas))
 })
 
+//get por id
+
+app.get('/peliculas/:id', async (req, res) => {
+    try {
+        const campos = ['tituloPelicula', 'director', 'productor'];
+        const pelicula = await peliculas.findById(req.params.id, campos);
+        if (!pelicula) {
+            return res.status(404).json({ mensaje: "Pelicula no encontrada" });
+        }
+        res.json(pelicula);
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al obtener la pelicula", error: error.message });
+    }
+})
+
 //post peliculas
 
 app.post('/peliculas', (req,res) => {
@@ -54,6 +69,19 @@ app.post('/peliculas', (req,res) => {
 
     }catch(err){
         console.log(err)
+    }
+})
+
+//put peliculas
+app.put('/peliculas/:id', async (req, res) => {
+    try {
+        const personajeActualizado = await peliculas.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!personajeActualizado) {
+            return res.status(404).json({ mensaje: "Pelicula no encontrado" });
+        }
+        res.json(personajeActualizado);
+    } catch (error) {
+            res.status(500).json({ mensaje: "Error al actualizar el personaje", error: error.message });
     }
 })
 
