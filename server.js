@@ -7,7 +7,7 @@ const mooongose = require('mongoose')
 mooongose
     .connect('mongodb://localhost:27017/BACK-SWAPI')
     .then(() => console.log('Conectado a la base de datos'))
-    
+
 app.listen(5005, () => console.log("Servidor levantado en el puerto 5005"))
 
 
@@ -21,18 +21,18 @@ const especies = require('./modelos/especiesModelo.js')
 const vehiculos = require('./modelos/vehiculos.js')
 
 //get personajes
-app.get('/personajes', (req, res)=>{
+app.get('/personajes', (req, res) => {
     personajes
-    .find()
-    .then(personajes => res.send(personajes))
+        .find()
+        .then(personajes => res.send(personajes))
 })
 
 //get peliculas
 
 app.get('/peliculas', (req, res) => {
     peliculas
-    .find()
-    .then(peliculas => res.send(peliculas))
+        .find()
+        .then(peliculas => res.send(peliculas))
 })
 
 //get por id
@@ -52,8 +52,8 @@ app.get('/peliculas/:id', async (req, res) => {
 
 //post peliculas
 
-app.post('/peliculas', (req,res) => {
-    try{
+app.post('/peliculas', (req, res) => {
+    try {
         const nuevaPelicula = new peliculas({
             tituloPelicula: req.body.tituloPelicula,
             director: req.body.director,
@@ -67,7 +67,7 @@ app.post('/peliculas', (req,res) => {
         console.log("Agregado")
         res.status(201).json(nuevaPelicula)
 
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 })
@@ -81,7 +81,7 @@ app.put('/peliculas/:id', async (req, res) => {
         }
         res.json(personajeActualizado);
     } catch (error) {
-            res.status(500).json({ mensaje: "Error al actualizar el personaje", error: error.message });
+        res.status(500).json({ mensaje: "Error al actualizar el personaje", error: error.message });
     }
 })
 
@@ -89,30 +89,55 @@ app.put('/peliculas/:id', async (req, res) => {
 
 app.get('/planetas', (req, res) => {
     planetas
-    .find()
-    .then(planetas => res.send(planetas))
+        .find()
+        .then(planetas => res.send(planetas))
+})
+
+//get planetas por id 
+
+app.get('/planetas/:id', async (req, res) => {
+    try {
+        const camposFuera = ['-fec_creacion', '-fec_modificacion'];
+        const planeta = await planetas.findById(req.params.id, camposFuera);
+        if (!planeta) {
+            return res.status(404).json({ mensaje: "Planeta no encontrado" })
+        }
+        res.json(planeta);
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+//post planetas
+
+app.post('/planetas', (req,res) => {
+    try{
+
+    }catch(err){
+        console.log(err);
+    }
 })
 
 //get naves
 
 app.get('/naves', (req, res) => {
     naves
-    .find()
-    .then(naves => res.send(naves))
+        .find()
+        .then(naves => res.send(naves))
 })
 
 //get especies
 
 app.get('/especies', (req, res) => {
     especies
-    .find()
-    .then(especies => res.send(especies))
+        .find()
+        .then(especies => res.send(especies))
 })
 
 //get vehiculos
 
-app.get('/vehiculos', (req,res) => {
+app.get('/vehiculos', (req, res) => {
     vehiculos
-    .find()
-    .then(vehiculos => res.send(vehiculos))
+        .find()
+        .then(vehiculos => res.send(vehiculos))
 })
