@@ -19,6 +19,7 @@ const planetas = require('./modelos/planetasModelo.js')
 const naves = require('./modelos/navesModelo.js')
 const especies = require('./modelos/especiesModelo.js')
 const vehiculos = require('./modelos/vehiculos.js')
+const camposFuera = ['-fec_creacion', '-fec_modificacion'];
 
 //get personajes
 app.get('/personajes', (req, res) => {
@@ -94,7 +95,7 @@ app.delete('/peliculas/:id', async (req, res) => {
         {
             return res.status(404).json({mensaje: "Pelicula no encontrada"})
         }
-        res.json(peliculaEliminada)
+        res.json("Eliminado con exito")
     }catch(error){
         res.status(500).json({mensaje: "Error al eliminar la pelicula", error: error.message})
     }
@@ -112,7 +113,6 @@ app.get('/planetas', (req, res) => {
 
 app.get('/planetas/:id', async (req, res) => {
     try {
-        const camposFuera = ['-fec_creacion', '-fec_modificacion'];
         const planeta = await planetas.findById(req.params.id, camposFuera);
         if (!planeta) {
             return res.status(404).json({ mensaje: "Planeta no encontrado" })
@@ -148,7 +148,7 @@ app.post('/planetas', (req,res) => {
     }
 })
 
-8//put planetas
+//put planetas
 
 app.put('/planetas/:id',async(req,res) => {
     try{
@@ -170,7 +170,7 @@ app.delete('/planetas/:id', async (req,res) => {
         if(!planetaEliminado){
             return res.status(404).json({mensaje: "Planeta no encontrado"})
         }
-        res.json(planetaEliminado)
+        res.json("Eliminado con exito")
     }catch(error){
         res.status(500).json({mensaje: "Error al eliminar el planeta", error: error.message})
     }
@@ -191,6 +191,75 @@ app.get('/especies', (req, res) => {
         .find()
         .then(especies => res.send(especies))
 })
+
+//get especies por id
+
+app.get('/especies/:id', async (req, res) => {
+    try {
+        const especiess = await especies.findById(req.params.id, camposFuera);
+        if (!especiess) {
+            return res.status(404).json({ mensaje: "especies no encontrada" });
+        }
+        res.json(especiess);
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al obtener la especies", error: error.message });
+    }
+})
+
+//post especies
+
+app.post('/especies', (req,res) => {
+    try{
+        const nuevaEspecie = new especies({
+            nombre: req.body.nombreEspecie,
+            clasificacion: req.body.clasificacion,
+            designacion: req.body.designacion,
+            estatura: req.body.estatura,
+            colorDePiel: req.body.colordepiel,
+            colorDeOjos: req.body.colordeojos,
+            promedioDeVida: req.body.promediodevida,
+            lenguaje: req.body.lenguaje,
+            planetaNatal: req.body.planetanatal,
+            fec_creacion: req.body.fec_creacion,
+            fec_modificacion: req.body.fec_modificacion
+        });
+        console.log("Nueva especie",nuevaEspecie);
+        nuevaEspecie.save();
+        console.log("Agregado");
+        res.status(201).json(nuevaEspecie);
+    }catch(errr){
+        res.status(500).json({mensaje: "Error al agregar la especie", error: error.message})
+    }
+})
+
+//put especies
+
+app.put('/especies/:id', async (req,res) => {
+    try{
+        const especieActualizada = await especies.findByIdAndUpdate(req.params.id,req.body, {new: true});
+        if(!especieActualizada){
+            return res.status(404).json({mensaje: "Especie no encontrada"});
+        }
+        res.json(especieActualizada);
+    }catch(error){
+        res.status(500).json({mensaje: "error al actualizar la especie", error: error.message})
+    }
+})
+
+//delete especies
+
+app.delete('/especies/:id', async (req, res) => {
+    try{
+        const especieEliminada = await especies.findByIdAndDelete(req.params.id);
+        if(!especieEliminada){
+            return res.status(404).json({mensaje: "Especie no encontrada"})
+        }
+        res.json("Eliminado con exito")
+    }catch(error){
+        res.status(500).json({mensaje: "Error al eliminar la especie", error: error.message})
+    }
+})
+
 
 //get vehiculos
 
