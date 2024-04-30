@@ -89,15 +89,14 @@ app.put('/peliculas/:id', async (req, res) => {
 //delete peliculas
 
 app.delete('/peliculas/:id', async (req, res) => {
-    try{
+    try {
         const peliculaEliminada = await peliculas.findByIdAndDelete(req.params.id);
-        if(!peliculaEliminada)
-        {
-            return res.status(404).json({mensaje: "Pelicula no encontrada"})
+        if (!peliculaEliminada) {
+            return res.status(404).json({ mensaje: "Pelicula no encontrada" })
         }
         res.json("Eliminado con exito")
-    }catch(error){
-        res.status(500).json({mensaje: "Error al eliminar la pelicula", error: error.message})
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al eliminar la pelicula", error: error.message })
     }
 })
 
@@ -125,8 +124,8 @@ app.get('/planetas/:id', async (req, res) => {
 
 //post planetas
 
-app.post('/planetas', (req,res) => {
-    try{
+app.post('/planetas', (req, res) => {
+    try {
         const nuevoPlaneta = new planetas({
             nombrePlaneta: req.body.nombrePlaneta,
             diametro: req.body.diametro,
@@ -139,40 +138,40 @@ app.post('/planetas', (req,res) => {
             fec_creacion: req.body.fec_creacion,
             fec_modificacion: req.body.fec_modificacion
         });
-        console.log("Nuevo planeta",nuevoPlaneta);
+        console.log("Nuevo planeta", nuevoPlaneta);
         nuevoPlaneta.save();
         console.log("Agregado");
         res.status(201).json(nuevoPlaneta);
-    }catch(err){
+    } catch (err) {
         console.log(err);
     }
 })
 
 //put planetas
 
-app.put('/planetas/:id',async(req,res) => {
-    try{
-        const planetaActualizado = await planetas.findByIdAndUpdate(req.params.id, req.body, {new: true});
-        if(!planetaActualizado){
-            return res.status(404).json({mensaje: "Planeta no encontrado"});
+app.put('/planetas/:id', async (req, res) => {
+    try {
+        const planetaActualizado = await planetas.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!planetaActualizado) {
+            return res.status(404).json({ mensaje: "Planeta no encontrado" });
         }
         res.json(planetaActualizado);
-    }catch(error){
-        res.status(500).json({mensaje: "erro al actualizar el planeta", error: error.message})
+    } catch (error) {
+        res.status(500).json({ mensaje: "erro al actualizar el planeta", error: error.message })
     }
 })
 
 //delete planetas
 
-app.delete('/planetas/:id', async (req,res) => {
-    try{
+app.delete('/planetas/:id', async (req, res) => {
+    try {
         const planetaEliminado = await planetas.findByIdAndDelete(req.params.id);
-        if(!planetaEliminado){
-            return res.status(404).json({mensaje: "Planeta no encontrado"})
+        if (!planetaEliminado) {
+            return res.status(404).json({ mensaje: "Planeta no encontrado" })
         }
         res.json("Eliminado con exito")
-    }catch(error){
-        res.status(500).json({mensaje: "Error al eliminar el planeta", error: error.message})
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al eliminar el planeta", error: error.message })
     }
 })
 
@@ -182,6 +181,73 @@ app.get('/naves', (req, res) => {
     naves
         .find()
         .then(naves => res.send(naves))
+})
+
+//get naves por id 
+
+app.get('/naves/:id', async (req, res) => {
+    try {
+        const nave = await naves.findById(req.params.id, camposFuera);
+        if (!nave) {
+            return res.status(404).json({ mensaje: "Nave no encontrada" });
+        }
+        res.json(nave);
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al obtener la nave", error: error.message });
+    }
+})
+
+//post naves
+
+app.post('/naves', (req, res) => {
+    try {
+        const nuevaNave = new naves({
+            nombre: req.body.nombre,
+            modelo: req.body.modelo,
+            clase: req.body.clase,
+            tamano: req.body.tamano,
+            numPasajeros: req.body.numPasajeros,
+            maxVelocidadAtmosferica: req.body.maxVelocidadAtmosferica,
+            hiperimpulsor: req.body.hiperimpulsor,
+            MGLT: req.body.MGLT,
+            capacidadCarga: req.body.capacidadCarga,
+            tiempoMaxConsumible: req.body.tiempoMaxConsumible,
+        });
+        console.log("Nueva nave", nuevaNave);
+        nuevaNave.save();
+        console.log("Agregado");
+        res.status(201).json(nuevaNave);
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+//put naves
+
+app.put('/naves/:id', async (req, res) => {
+    try {
+        const naveActualizada = await naves.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!naveActualizada) {
+            return res.status(404).json({ mensaje: "Nave no encontrada" });
+        }
+        res.json(naveActualizada);
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al actualizar la nave", error: error.message })
+    }
+})
+
+//delete naves
+
+app.delete('/naves/:id', async (req, res) => {
+    try {
+        const naveEliminada = await naves.findByIdAndDelete(req.params.id);
+        if (!naveEliminada) {
+            return res.status(404).json({ mensaje: "Nave no encontrada" })
+        }
+        res.json("Eliminado con exito")
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al eliminar la nave", error: error.message })
+    }
 })
 
 //get especies
@@ -208,8 +274,8 @@ app.get('/especies/:id', async (req, res) => {
 
 //post especies
 
-app.post('/especies', (req,res) => {
-    try{
+app.post('/especies', (req, res) => {
+    try {
         const nuevaEspecie = new especies({
             nombre: req.body.nombreEspecie,
             clasificacion: req.body.clasificacion,
@@ -223,40 +289,40 @@ app.post('/especies', (req,res) => {
             fec_creacion: req.body.fec_creacion,
             fec_modificacion: req.body.fec_modificacion
         });
-        console.log("Nueva especie",nuevaEspecie);
+        console.log("Nueva especie", nuevaEspecie);
         nuevaEspecie.save();
         console.log("Agregado");
         res.status(201).json(nuevaEspecie);
-    }catch(errr){
-        res.status(500).json({mensaje: "Error al agregar la especie", error: error.message})
+    } catch (errr) {
+        res.status(500).json({ mensaje: "Error al agregar la especie", error: error.message })
     }
 })
 
 //put especies
 
-app.put('/especies/:id', async (req,res) => {
-    try{
-        const especieActualizada = await especies.findByIdAndUpdate(req.params.id,req.body, {new: true});
-        if(!especieActualizada){
-            return res.status(404).json({mensaje: "Especie no encontrada"});
+app.put('/especies/:id', async (req, res) => {
+    try {
+        const especieActualizada = await especies.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!especieActualizada) {
+            return res.status(404).json({ mensaje: "Especie no encontrada" });
         }
         res.json(especieActualizada);
-    }catch(error){
-        res.status(500).json({mensaje: "error al actualizar la especie", error: error.message})
+    } catch (error) {
+        res.status(500).json({ mensaje: "error al actualizar la especie", error: error.message })
     }
 })
 
 //delete especies
 
 app.delete('/especies/:id', async (req, res) => {
-    try{
+    try {
         const especieEliminada = await especies.findByIdAndDelete(req.params.id);
-        if(!especieEliminada){
-            return res.status(404).json({mensaje: "Especie no encontrada"})
+        if (!especieEliminada) {
+            return res.status(404).json({ mensaje: "Especie no encontrada" })
         }
         res.json("Eliminado con exito")
-    }catch(error){
-        res.status(500).json({mensaje: "Error al eliminar la especie", error: error.message})
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al eliminar la especie", error: error.message })
     }
 })
 
@@ -285,23 +351,23 @@ app.get('/vehiculos/:id', async (req, res) => {
 
 //post vehiculos
 
-app.post('/vehiculos', (req,res) => {
-    try{
+app.post('/vehiculos', (req, res) => {
+    try {
         const nuevoVehiculo = new vehiculos({
             nombre: req.body.nombre,
             modelo: req.body.modelo,
-            clase : req.body.clase,
+            clase: req.body.clase,
             tamano: req.body.tamano,
             numPasajeros: req.body.numPasajeros,
             maxVelocidadAtmosferica: req.body.maxVelocidadAtmosferica,
             capacidadMaxima: req.body.capacidadMaxima,
             tiempoMaxConsusmible: req.body.tiempoMaxConsusmible
         });
-        console.log("Nuevo vehiculo",nuevoVehiculo);
+        console.log("Nuevo vehiculo", nuevoVehiculo);
         nuevoVehiculo.save();
         console.log("Agregado");
         res.status(201).json(nuevoVehiculo);
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 })
@@ -309,28 +375,28 @@ app.post('/vehiculos', (req,res) => {
 
 //put vehiculos
 
-app.put('/vehiculos/:id', async (req,res) => {
-    try{
-        const vehiculoActualizado = await vehiculos.findByIdAndUpdate(req.params.id,req.body,{new: true});
-        if(!vehiculoActualizado){
-            return res.status(404).json({mensaje: "Vehiculo no encontrado"});
+app.put('/vehiculos/:id', async (req, res) => {
+    try {
+        const vehiculoActualizado = await vehiculos.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!vehiculoActualizado) {
+            return res.status(404).json({ mensaje: "Vehiculo no encontrado" });
         }
         res.json(vehiculoActualizado);
-    }catch(error){
-        res.status(500).json({mensaje: "Error al actualizar el vehiculo", error: error.message})
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al actualizar el vehiculo", error: error.message })
     }
 })
 
 //delete vehiculos
 
-app.delete('/vehiculos/:id', async (req,res) => {
-    try{
+app.delete('/vehiculos/:id', async (req, res) => {
+    try {
         const vehiculoEliminado = await vehiculos.findByIdAndDelete(req.params.id);
-        if(!vehiculoEliminado){
-            return res.status(404).json({mensaje: "Vehiculo no encontrado"})
+        if (!vehiculoEliminado) {
+            return res.status(404).json({ mensaje: "Vehiculo no encontrado" })
         }
         res.json("Eliminado con exito")
-    }catch(error){
-        res.status(500).json({mensaje: "Error al eliminar el vehiculo", error: error.message})
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al eliminar el vehiculo", error: error.message })
     }
 })
