@@ -75,13 +75,28 @@ app.post('/peliculas', (req, res) => {
 //put peliculas
 app.put('/peliculas/:id', async (req, res) => {
     try {
-        const personajeActualizado = await peliculas.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!personajeActualizado) {
+        const peliculaActualizada = await peliculas.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!peliculaActualizada) {
             return res.status(404).json({ mensaje: "Pelicula no encontrado" });
         }
-        res.json(personajeActualizado);
+        res.json(peliculaActualizada);
     } catch (error) {
         res.status(500).json({ mensaje: "Error al actualizar el personaje", error: error.message });
+    }
+})
+
+//delete peliculas
+
+app.delete('/peliculas/:id', async (req, res) => {
+    try{
+        const peliculaEliminada = await peliculas.findByIdAndDelete(req.params.id);
+        if(!peliculaEliminada)
+        {
+            return res.status(404).json({mensaje: "Pelicula no encontrada"})
+        }
+        res.json(peliculaEliminada)
+    }catch(error){
+        res.status(500).json({mensaje: "Error al eliminar la pelicula", error: error.message})
     }
 })
 
@@ -112,9 +127,52 @@ app.get('/planetas/:id', async (req, res) => {
 
 app.post('/planetas', (req,res) => {
     try{
-
+        const nuevoPlaneta = new planetas({
+            nombrePlaneta: req.body.nombrePlaneta,
+            diametro: req.body.diametro,
+            periodoRotacion: req.body.periodoRotacion,
+            gravedad: req.body.gravedad,
+            poblacion: req.body.poblacion,
+            clima: req.body.clima,
+            terreno: req.body.terreno,
+            superficieAgua: req.body.superficieAgua,
+            fec_creacion: req.body.fec_creacion,
+            fec_modificacion: req.body.fec_modificacion
+        });
+        console.log("Nuevo planeta",nuevoPlaneta);
+        nuevoPlaneta.save();
+        console.log("Agregado");
+        res.status(201).json(nuevoPlaneta);
     }catch(err){
         console.log(err);
+    }
+})
+
+8//put planetas
+
+app.put('/planetas/:id',async(req,res) => {
+    try{
+        const planetaActualizado = await planetas.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        if(!planetaActualizado){
+            return res.status(404).json({mensaje: "Planeta no encontrado"});
+        }
+        res.json(planetaActualizado);
+    }catch(error){
+        res.status(500).json({mensaje: "erro al actualizar el planeta", error: error.message})
+    }
+})
+
+//delete planetas
+
+app.delete('/planetas/:id', async (req,res) => {
+    try{
+        const planetaEliminado = await planetas.findByIdAndDelete(req.params.id);
+        if(!planetaEliminado){
+            return res.status(404).json({mensaje: "Planeta no encontrado"})
+        }
+        res.json(planetaEliminado)
+    }catch(error){
+        res.status(500).json({mensaje: "Error al eliminar el planeta", error: error.message})
     }
 })
 
