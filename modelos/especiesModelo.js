@@ -11,7 +11,7 @@ const especiesSchema = new mongoose.Schema({
     colorDeCabello: String,
     colorDePiel: String,
     lenguaje: String,
-    planetaNatal: {
+    planetanatal: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Planetas'
     },

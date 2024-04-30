@@ -219,7 +219,7 @@ app.post('/especies', (req,res) => {
             colorDeOjos: req.body.colordeojos,
             promedioDeVida: req.body.promediodevida,
             lenguaje: req.body.lenguaje,
-            planetaNatal: req.body.planetanatal,
+            planetanatal: req.body.planetanatal,
             fec_creacion: req.body.fec_creacion,
             fec_modificacion: req.body.fec_modificacion
         });
@@ -267,4 +267,70 @@ app.get('/vehiculos', (req, res) => {
     vehiculos
         .find()
         .then(vehiculos => res.send(vehiculos))
+})
+
+//get vehiculos por id
+
+app.get('/vehiculos/:id', async (req, res) => {
+    try {
+        const vehiculo = await vehiculos.findById(req.params.id, camposFuera);
+        if (!vehiculo) {
+            return res.status(404).json({ mensaje: "Vehiculo no encontrado" });
+        }
+        res.json(vehiculo);
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al obtener el vehiculo", error: error.message });
+    }
+})
+
+//post vehiculos
+
+app.post('/vehiculos', (req,res) => {
+    try{
+        const nuevoVehiculo = new vehiculos({
+            nombre: req.body.nombre,
+            modelo: req.body.modelo,
+            clase : req.body.clase,
+            tamano: req.body.tamano,
+            numPasajeros: req.body.numPasajeros,
+            maxVelocidadAtmosferica: req.body.maxVelocidadAtmosferica,
+            capacidadMaxima: req.body.capacidadMaxima,
+            tiempoMaxConsusmible: req.body.tiempoMaxConsusmible
+        });
+        console.log("Nuevo vehiculo",nuevoVehiculo);
+        nuevoVehiculo.save();
+        console.log("Agregado");
+        res.status(201).json(nuevoVehiculo);
+    }catch(err){
+        console.log(err)
+    }
+})
+
+
+//put vehiculos
+
+app.put('/vehiculos/:id', async (req,res) => {
+    try{
+        const vehiculoActualizado = await vehiculos.findByIdAndUpdate(req.params.id,req.body,{new: true});
+        if(!vehiculoActualizado){
+            return res.status(404).json({mensaje: "Vehiculo no encontrado"});
+        }
+        res.json(vehiculoActualizado);
+    }catch(error){
+        res.status(500).json({mensaje: "Error al actualizar el vehiculo", error: error.message})
+    }
+})
+
+//delete vehiculos
+
+app.delete('/vehiculos/:id', async (req,res) => {
+    try{
+        const vehiculoEliminado = await vehiculos.findByIdAndDelete(req.params.id);
+        if(!vehiculoEliminado){
+            return res.status(404).json({mensaje: "Vehiculo no encontrado"})
+        }
+        res.json("Eliminado con exito")
+    }catch(error){
+        res.status(500).json({mensaje: "Error al eliminar el vehiculo", error: error.message})
+    }
 })

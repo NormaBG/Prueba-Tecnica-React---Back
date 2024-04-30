@@ -4,7 +4,7 @@ const vehiculosSchema = moongose.Schema({
     nombre:String, //obligatorio
     modelo: String, // obligatorio
     clase: String,
-    tamaño: String,
+    tamano: String,
     numPasajeros: String,
     maxVelocidadAtmosferica: String,
     capacidadMaxima: String,
