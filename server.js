@@ -28,6 +28,71 @@ app.get('/personajes', (req, res) => {
         .then(personajes => res.send(personajes))
 })
 
+//get personajes por id
+
+app.get('/personajes:id', async (req, res) => {
+    try {
+        const personajes = await personajes.findById(req.params.id)
+        if(!pelicula){
+            return res.status(404).json({ mensaje: "Personaje no encontrado"})
+        }
+        res.json(personajes);
+    }catch(error){
+        res.status(500).json({ mensaje: "Error al obtener el personaje"})
+    }
+})
+
+//post personajes
+
+app.post('/personajes', (req, res) => {
+    try {
+        const nuevoPersonaje = new personaje({
+            nombre: req.body.nombre,
+            fechaDeNacimiento: req.body.fechaDeNacimiento,
+            colorDeOjos: req.body.colorDeOjos,
+            peliculas: req.body.peliculas,
+            planetaNatal: req.body.planetaNatal,
+            especies: req.body.especies,
+            naves: req.body.naves,
+            vehiculos: req.body.vehiculo,
+        })
+        console.log(nuevoPersonaje)
+        nuevoPersonaje.save()
+        console.log("Agregado")
+        res.status(201).json(nuevoPersonaje)
+    }catch (err){{
+        console.log(err)
+    }}
+})
+
+//put personajes
+
+app.put('/personajes/:id', async (req, res) => {
+    try {
+        const personajeActualizado = await personajes.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        if(!personajeActualizado){
+            return res.status(404).json({ mensaje: "Personaje no encontrado"})
+        }
+        res.json(personajeActualizado)
+    }catch(error){
+        res.status(500).json({ mensaje: "Error al actualizar el personaje"})
+    }
+})
+
+//delete personajes
+
+app.delete('/personajes/:id', async (req, res) => {
+    try {
+        const personajeEliminado = await personajes.findByIdAndDelete(req.params.id)
+        if(!personajeEliminado){
+            return res.status(404).json({ mensaje: "Personaje no encontrado"})
+        }
+        res.json("Eliminado con exito")
+    }catch(error){
+        res.status(500).json({ mensaje: "Error al eliminar el personaje"})
+    }
+})
+
 //get peliculas
 
 app.get('/peliculas', (req, res) => {
